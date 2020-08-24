@@ -28,12 +28,41 @@ public class Duke {
         printLine();
         Scanner in = new Scanner(System.in);
         String command = in.nextLine();
-        while(!command.equalsIgnoreCase("bye")) {
-            System.out.println("\n\t"+command+"\n");
+        Task[] taskList = new Task[100];
+        while(true) {
+            if(command.equalsIgnoreCase("bye")) {
+
+                System.out.println("\n\tSee you! Have a nice day!\n");
+                printLine();
+                break;
+
+            }
+            else if(command.equalsIgnoreCase("list")) {
+
+                if(Task.getNoOfTasks()==0) {
+                    System.out.println("\n\tYou currently don't have any tasks.");
+                    System.out.println("\tTo add a task simply input the task description.\n");
+                }
+                else {
+                    System.out.println("\n\tHere's your current To-Do list: ");
+                    for (int i = 0; i<Task.getNoOfTasks(); i += 1) {
+                        System.out.println("\t\t"+(i+1)+". " + taskList[i].getName());
+                    }
+                    System.out.println();
+                }
+
+            }
+            else {
+
+                Task newItem = new Task(command);
+                taskList[Task.getNoOfTasks() - 1] = newItem;
+                System.out.println("\n\tAdded task \"" + newItem.getName() + "\" to your To-Do's!");
+                System.out.println("\tYou now have " + Task.getNoOfTasks() + " incomplete task"
+                        + (Task.getNoOfTasks() != 1 ? "s" : "") + ".\n");
+                
+            }
             printLine();
             command = in.nextLine();
         }
-        System.out.println("\n\tSee you! Have a nice day!\n");
-        printLine();
     }
 }
