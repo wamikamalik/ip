@@ -1,3 +1,5 @@
+import  java.util.Scanner;
+
 public class Duke {
 
     /**
@@ -12,17 +14,26 @@ public class Duke {
     }
 
     public static void main(String[] args) {
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
+
+        String logo = " __A__   _C__   _E__\n"
+                    + "/  _  \\ /  __| |  __|\n"
+                    + "| |_| | | |    | |__   \n"
+                    + "|  _  | | |__  | |__ \n"
+                    + "| | | | \\____| |____|\n";
+
         System.out.print(logo);
         printLine();
-        System.out.println(" Hello! I'm Duke");
-        System.out.println(" What can I do for you?\n");
+        System.out.println("\tHey there! I'm Ace, your very own personal assistant.");
+        System.out.println("\tHow can I help you today?\n");
         printLine();
-        System.out.println(" Bye. Hope to see you again soon!\n");
+        Scanner in = new Scanner(System.in);
+        String command = in.nextLine();
+        while(!command.equalsIgnoreCase("bye")) {
+            System.out.println("\n\t"+command+"\n");
+            printLine();
+            command = in.nextLine();
+        }
+        System.out.println("\n\tSee you! Have a nice day!\n");
         printLine();
     }
 }
