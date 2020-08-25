@@ -7,10 +7,15 @@ public class Duke {
      *
      */
     public static void printLine() {
+
         for(int i = 0; i<100; i++) {
+
             System.out.print("-");
+
         }
+
         System.out.println();
+
     }
 
     public static void main(String[] args) {
@@ -23,73 +28,97 @@ public class Duke {
 
         System.out.print(logo);
         printLine();
+
         System.out.println("\tHey there! I'm Ace, your very own personal assistant.");
         System.out.println("\tHow can I help you today?\n");
         printLine();
+
         Scanner in = new Scanner(System.in);
         String command = in.nextLine();
-        Task[] taskList = new Task[100];
+        Task[] tasks = new Task[100];
+
         while(true) {
+            //the following code interprets the command entered by the user and takes appropriate actions.
             if(command.equalsIgnoreCase("bye")) {
 
                 System.out.println("\n\tSee you! Have a nice day!\n");
                 printLine();
                 break;
 
-            }
-            else if(command.equalsIgnoreCase("list")) {
+            } else if(command.equalsIgnoreCase("list")) {
 
                 if(Task.getNoOfTasks()==0) {
+
                     System.out.println("\n\tYou currently don't have any tasks.");
                     System.out.println("\tTo add a task simply input the task description.\n");
-                }
-                else {
+
+                } else {
+
                     System.out.println("\n\tHere's your current To-Do list: ");
                     for (int i = 0; i<Task.getNoOfTasks(); i += 1) {
-                        System.out.println("\t\t"+ (i+1) +". [" + taskList[i].getIcon() + "] " + taskList[i].getName());
+
+                        System.out.println("\t\t"+ (i+1) +". [" + tasks[i].getIcon() + "] "
+                                + tasks[i].getName());
+
                     }
                     System.out.println();
+
                 }
 
-            }
-            else if(command.trim().startsWith("done")||command.trim().startsWith("Done")) {
+            } else if(command.trim().startsWith("done")||command.trim().startsWith("Done")) {
+
                 try {
+
                     String rawItemNo = command.trim().substring(5, command.length());
+
                     if(rawItemNo.endsWith(".")) {
+
                         rawItemNo = rawItemNo.substring(0,rawItemNo.length()-1);
+
                     }
+
                     int itemNo = Integer.parseInt(rawItemNo);
-                    //System.out.println("\n\t" + itemNo + "\n");
+
                     if(itemNo==0 || itemNo>Task.getNoOfTasks()) {
+
                         System.out.println("\n\tItem "+ itemNo +" does not exist.\n");
-                    }
-                    else if(taskList[itemNo-1].isDone()) {
+
+                    } else if(tasks[itemNo-1].isDone()) {
+
                         System.out.println("\n\tThis task was marked as done earlier!");
                         System.out.println("\tTo see the list of incomplete tasks simply type \"list\".\n");
-                    }
-                    else {
-                        taskList[itemNo-1].markAsDone();
+
+                    } else {
+
+                        tasks[itemNo-1].markAsDone();
                         System.out.println("\n\tGreat! I have updated your To-Do list for the following task:");
-                        System.out.println("\t\t ["+ taskList[itemNo-1].getIcon() + "] " + taskList[itemNo-1].getName()+"\n");
+                        System.out.println("\t\t ["+ tasks[itemNo-1].getIcon() + "] "
+                                + tasks[itemNo-1].getName()+"\n");
+
                     }
 
-                }
-                catch (NumberFormatException error) {
+                } catch (NumberFormatException error) {
+
                     System.out.println("\n\tPlease enter a valid item number.\n");
+
                 }
-            }
-            else {
+
+            } else {
 
                 Task newItem = new Task(command);
-                taskList[Task.getNoOfTasks() - 1] = newItem;
+                tasks[Task.getNoOfTasks() - 1] = newItem;
                 System.out.println("\n\tAdded task \"" + newItem.getName() + "\" to your To-Do's!");
-                System.out.println("\tYou now have " + Task.getIncompleteTasks() + " incomplete task"
-                        + (Task.getIncompleteTasks() != 1 ? "s" : "") + ".");
+                System.out.println("\tYou now have " + Task.getnoOfIncompleteTasks() + " incomplete task"
+                        + (Task.getnoOfIncompleteTasks() != 1 ? "s" : "") + ".");
                 System.out.println("\tTo view the To-Do list simply type \"list\".\n");
                 
             }
             printLine();
+
             command = in.nextLine();
+
         }
+
     }
+
 }
