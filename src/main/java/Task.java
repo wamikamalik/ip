@@ -10,9 +10,7 @@ public class Task {
     public static int noOfIncompleteTasks = 0;
 
     public Task() {
-
         this("");
-
     }
 
     public Task(String name) {
@@ -25,39 +23,28 @@ public class Task {
     }
 
     public String getName() {
-
         return name;
-
     }
 
     public String getIcon() {
-
         return (isDone ? "\u2713" : "\u2718");
-
     }
 
     public void markAsDone() {
-
         this.isDone = true;
         noOfIncompleteTasks-=1;
-
     }
 
     public static int getNoOfTasks() {
-
         return noOfTasks;
-
     }
 
     public static int getnoOfIncompleteTasks() {
-
         return noOfIncompleteTasks;
-
     }
 
     public boolean isDone() {
-
         return isDone;
-
     }
+
 }
