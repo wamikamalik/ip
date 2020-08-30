@@ -17,6 +17,45 @@ public class Duke {
 
     public static void main(String[] args) {
 
+        welcomeMessage();
+
+        Scanner in = new Scanner(System.in);
+        Command command = new Command(in.nextLine());
+        Task[] tasks = new Task[100];
+
+        while(true) {
+            //the following code interprets the command entered by the user and takes appropriate actions.
+            CommandType type = command.extractType();
+            switch (type) {
+                case EXIT:
+                    System.out.println("\n\tSee you! Have a nice day!\n");
+                    break;
+                case LIST:
+                    listTasks(tasks);
+                    break;
+                case MARK_DONE:
+                    int itemNo = extractItemNo(command.getMessage());
+                    executeDone(tasks, itemNo);
+                    break;
+                case ADD:
+                    executeAdd(command.getMessage(), tasks);
+                    break;
+                default:
+                    System.out.println("Sorry :( I don't understand.");
+            }
+            printLine();
+            if(type == CommandType.EXIT) {
+                break;
+            }
+            command = new Command(in.nextLine());
+        }
+
+    }
+
+    /** Print the welcome massage.
+     *
+     */
+    private static void welcomeMessage() {
         String logo = " __A__   _C__   _E__\n"
                     + "/  _  \\ /  __| |  __|\n"
                     + "| |_| | | |    | |__   \n"
@@ -29,29 +68,6 @@ public class Duke {
         System.out.println("\tHey there! I'm Ace, your very own personal assistant.");
         System.out.println("\tHow can I help you today?\n");
         printLine();
-
-        Scanner in = new Scanner(System.in);
-        String command = in.nextLine();
-        Task[] tasks = new Task[100];
-
-        while(true) {
-            //the following code interprets the command entered by the user and takes appropriate actions.
-            if(command.equalsIgnoreCase("bye")) {
-                System.out.println("\n\tSee you! Have a nice day!\n");
-                printLine();
-                break;
-            } else if(command.equalsIgnoreCase("list")) {
-                listTasks(tasks);
-            } else if(command.trim().startsWith("done")||command.trim().startsWith("Done")) {
-                int itemNo = extractItemNo(command);
-                executeDone(tasks, itemNo);
-            } else {
-                executeAdd(command, tasks);
-            }
-            printLine();
-            command = in.nextLine();
-        }
-
     }
 
     /** Adds the new task to the list.
