@@ -2,5 +2,8 @@ public enum CommandType {
     EXIT,
     LIST,
     MARK_DONE,
-    ADD
+    TODO,
+    EVENT,
+    DEADLINE,
+    NONE
 }

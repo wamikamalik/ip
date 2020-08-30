@@ -10,6 +10,7 @@ public class Task {
     public static int noOfIncompleteTasks = 0;
 
     public Task() {
+
         this("");
     }
 
@@ -23,10 +24,12 @@ public class Task {
     }
 
     public String getName() {
+
         return name;
     }
 
     public String getIcon() {
+
         return (isDone ? "\u2713" : "\u2718");
     }
 
@@ -36,15 +39,22 @@ public class Task {
     }
 
     public static int getNoOfTasks() {
+
         return noOfTasks;
     }
 
-    public static int getnoOfIncompleteTasks() {
+    public static int getNoOfIncompleteTasks() {
+
         return noOfIncompleteTasks;
     }
 
     public boolean isDone() {
+
         return isDone;
     }
 
+    @Override
+    public String toString() {
+        return "[" + getIcon() + "] " + getName();
+    }
 }

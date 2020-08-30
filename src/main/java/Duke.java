@@ -37,11 +37,17 @@ public class Duke {
                     int itemNo = extractItemNo(command.getMessage());
                     executeDone(tasks, itemNo);
                     break;
-                case ADD:
-                    executeAdd(command.getMessage(), tasks);
+                case TODO:
+                    executeAdd(command.getMessage(), tasks, CommandType.TODO);
                     break;
-                default:
-                    System.out.println("Sorry :( I don't understand.");
+                case DEADLINE:
+                    executeAdd(command.getMessage(), tasks, CommandType.DEADLINE);
+                    break;
+                case EVENT:
+                    executeAdd(command.getMessage(), tasks, CommandType.EVENT);
+                    break;
+                case NONE:
+                    System.out.println("\n\tSorry! :( I don't understand.\n");
             }
             printLine();
             if(type == CommandType.EXIT) {
@@ -74,15 +80,45 @@ public class Duke {
      *
      * @param command task name given by the user
      * @param tasks the list of tasks
+     * @param type the type of task
      */
-    private static void executeAdd(String command, Task[] tasks) {
+    private static void executeAdd(String command, Task[] tasks, CommandType type) {
 
-        Task newItem = new Task(command);
-        tasks[Task.getNoOfTasks() - 1] = newItem;
-        System.out.println("\n\tAdded task \"" + newItem.getName() + "\" to your To-Do's!");
-        System.out.println("\tYou now have " + Task.getnoOfIncompleteTasks() + " incomplete task"
-                + (Task.getnoOfIncompleteTasks() != 1 ? "s" : "") + ".");
-        System.out.println("\tTo view the To-Do list simply type \"list\".\n");
+        boolean isCorrect = false;
+        switch (type) {
+        case TODO:
+            isCorrect = true;
+            String todoName = command.trim().substring(5, command.length());
+            tasks[Task.getNoOfTasks()] = new Todo(todoName);
+            break;
+        case DEADLINE:
+            if(command.contains("/by")) {
+                isCorrect = true;
+                String[] rawName = command.trim().split("/by ");
+                String deadlineName = rawName[0].substring(9, rawName[0].length());
+                String by = rawName[1];
+                tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
+            }
+            break;
+        case EVENT:
+            if(command.contains("/on")) {
+                isCorrect = true;
+                String[] rawEventName = command.trim().split("/on ");
+                String eventName = rawEventName[0].substring(6, rawEventName[0].length());
+                String on = rawEventName[1];
+                tasks[Task.getNoOfTasks()] = new Event(eventName, on);
+                break;
+            }
+        }
+        if(isCorrect) {
+            System.out.println("\n\tAdded task \"" + tasks[Task.getNoOfTasks() - 1] + "\" to your To-Do's!");
+            System.out.println("\tYou now have " + Task.getNoOfIncompleteTasks() + " incomplete task"
+                    + (Task.getNoOfIncompleteTasks() != 1 ? "s" : "") + ".");
+            System.out.println("\tTo view the To-Do list simply type \"list\".\n");
+        }
+        else {
+            System.out.println("\n\tOops! Wrong format given for the command :\\\n");
+        }
 
     }
 
@@ -93,7 +129,7 @@ public class Duke {
      */
     private static void executeDone(Task[] tasks, int itemNo) {
 
-        if(itemNo ==0) {
+        if(itemNo == 0) {
             System.out.println("\n\tPlease enter a valid item number.\n");
         }else if(itemNo >Task.getNoOfTasks()) {
             System.out.println("\n\tItem "+ itemNo +" does not exist.\n");
@@ -142,8 +178,7 @@ public class Duke {
         } else {
             System.out.println("\n\tHere's your current To-Do list: ");
             for (int i = 0; i<Task.getNoOfTasks(); i += 1) {
-                System.out.println("\t\t"+ (i+1) +". [" + tasks[i].getIcon() + "] "
-                        + tasks[i].getName());
+                System.out.println("\t\t"+ (i+1) + ". " + tasks[i]);
             }
             System.out.println();
         }

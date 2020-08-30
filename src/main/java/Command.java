@@ -14,8 +14,18 @@ public class Command {
             return CommandType.LIST;
         } else if(command.equalsIgnoreCase("done")) {
             return CommandType.MARK_DONE;
+        } else if(message.length()<5) {
+            return CommandType.NONE;
         } else {
-            return CommandType.ADD;
+            if(command.equalsIgnoreCase("todo")){
+                return CommandType.TODO;
+            } else if(command.equalsIgnoreCase("deadline")){
+                return CommandType.DEADLINE;
+            } else if(command.equalsIgnoreCase("event")) {
+                return CommandType.EVENT;
+            } else {
+                return CommandType.NONE;
+            }
         }
     }
 
