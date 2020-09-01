@@ -64,8 +64,8 @@ public class Duke {
     private static void welcomeMessage() {
         String logo = " __A__   _C__   _E__\n"
                     + "/  _  \\ /  __| |  __|\n"
-                    + "| |_| | | |    | |__   \n"
-                    + "|  _  | | |__  | |__ \n"
+                    + "| |_| | | |    | |__\n"
+                    + "|  _  | | |__  | |__\n"
                     + "| | | | \\____| |____|\n";
 
         System.out.print(logo);
@@ -95,7 +95,7 @@ public class Duke {
             if(command.contains("/by")) {
                 isCorrect = true;
                 String[] rawName = command.trim().split("/by ");
-                String deadlineName = rawName[0].substring(9, rawName[0].length());
+                String deadlineName = rawName[0].substring(9, rawName[0].length()-1);
                 String by = rawName[1];
                 tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
             }
@@ -104,7 +104,7 @@ public class Duke {
             if(command.contains("/on")) {
                 isCorrect = true;
                 String[] rawEventName = command.trim().split("/on ");
-                String eventName = rawEventName[0].substring(6, rawEventName[0].length());
+                String eventName = rawEventName[0].substring(6, rawEventName[0].length()-1);
                 String on = rawEventName[1];
                 tasks[Task.getNoOfTasks()] = new Event(eventName, on);
                 break;
@@ -176,7 +176,7 @@ public class Duke {
             System.out.println("\n\tYou currently don't have any tasks.");
             System.out.println("\tTo add a task simply input the task description.\n");
         } else {
-            System.out.println("\n\tHere's your current To-Do list: ");
+            System.out.println("\n\tHere's your current To-Do list:");
             for (int i = 0; i<Task.getNoOfTasks(); i += 1) {
                 System.out.println("\t\t"+ (i+1) + ". " + tasks[i]);
             }
