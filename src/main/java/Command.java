@@ -3,6 +3,7 @@ public class Command {
     private String message;
 
     Command(String message) {
+
         this.message = message;
     }
 

@@ -2,6 +2,11 @@ import  java.util.Scanner;
 
 public class Duke {
 
+    public static final String BYE_MESSAGE = "\n\tSee you! Have a nice day!\n";
+    public static final String UNIDENTIFIED_MESSAGE = "\n\tSorry! :( I don't understand.\n";
+    public static final String DEADLINE_IDENTIFIER = "/by ";
+    public static final String EVENT_IDENTIFIER = "/on ";
+
     /**
      * prints a line of 100 character length.
      *
@@ -28,7 +33,7 @@ public class Duke {
             CommandType type = command.extractType();
             switch (type) {
                 case EXIT:
-                    System.out.println("\n\tSee you! Have a nice day!\n");
+                    System.out.println(BYE_MESSAGE);
                     break;
                 case LIST:
                     listTasks(tasks);
@@ -47,7 +52,7 @@ public class Duke {
                     executeAdd(command.getMessage(), tasks, CommandType.EVENT);
                     break;
                 case NONE:
-                    System.out.println("\n\tSorry! :( I don't understand.\n");
+                    System.out.println(UNIDENTIFIED_MESSAGE);
             }
             printLine();
             if(type == CommandType.EXIT) {
@@ -62,6 +67,7 @@ public class Duke {
      *
      */
     private static void welcomeMessage() {
+
         String logo = " __A__   _C__   _E__\n"
                     + "/  _  \\ /  __| |  __|\n"
                     + "| |_| | | |    | |__\n"
@@ -74,6 +80,7 @@ public class Duke {
         System.out.println("\tHey there! I'm Ace, your very own personal assistant.");
         System.out.println("\tHow can I help you today?\n");
         printLine();
+
     }
 
     /** Adds the new task to the list.
@@ -92,24 +99,35 @@ public class Duke {
             tasks[Task.getNoOfTasks()] = new Todo(todoName);
             break;
         case DEADLINE:
-            if(command.contains("/by")) {
+            if(command.contains(DEADLINE_IDENTIFIER)) {
                 isCorrect = true;
-                String[] rawName = command.trim().split("/by ");
+                String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
                 String deadlineName = rawName[0].substring(9, rawName[0].length()-1);
                 String by = rawName[1];
                 tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
             }
             break;
         case EVENT:
-            if(command.contains("/on")) {
+            if(command.contains(EVENT_IDENTIFIER)) {
                 isCorrect = true;
-                String[] rawEventName = command.trim().split("/on ");
+                String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
                 String eventName = rawEventName[0].substring(6, rawEventName[0].length()-1);
                 String on = rawEventName[1];
                 tasks[Task.getNoOfTasks()] = new Event(eventName, on);
                 break;
             }
         }
+        addMessage(tasks, isCorrect);
+
+    }
+
+    /**displays the appropriate message after adding task
+     *
+     * @param tasks the list of tasks
+     * @param isCorrect to check if the command is correct
+     */
+    private static void addMessage(Task[] tasks, boolean isCorrect) {
+
         if(isCorrect) {
             System.out.println("\n\tAdded task \"" + tasks[Task.getNoOfTasks() - 1] + "\" to your To-Do's!");
             System.out.println("\tYou now have " + Task.getNoOfIncompleteTasks() + " incomplete task"
@@ -119,6 +137,27 @@ public class Duke {
         else {
             System.out.println("\n\tOops! Wrong format given for the command :\\\n");
         }
+
+    }
+
+    /** Get the item number from the command entered.
+     *
+     * @param command the done command given
+     * @return the item number
+     */
+    private static int extractItemNo(String command) {
+
+        int itemNo;
+        try {
+            String rawItemNo = command.trim().substring(5, command.length());
+            if(rawItemNo.endsWith(".")) {
+                rawItemNo = rawItemNo.substring(0,rawItemNo.length()-1);
+            }
+            itemNo = Integer.parseInt(rawItemNo);
+        } catch (NumberFormatException error) {
+            itemNo = 0;
+        }
+        return itemNo;
 
     }
 
@@ -142,27 +181,6 @@ public class Duke {
             System.out.println("\t\t ["+ tasks[itemNo -1].getIcon() + "] "
                     + tasks[itemNo -1].getName()+"\n");
         }
-
-    }
-
-    /** Get the item number from the command entered.
-     *
-     * @param command the done command given
-     * @return the item number
-     */
-    private static int extractItemNo(String command) {
-
-        int itemNo;
-        try {
-            String rawItemNo = command.trim().substring(5, command.length());
-            if(rawItemNo.endsWith(".")) {
-                rawItemNo = rawItemNo.substring(0,rawItemNo.length()-1);
-            }
-            itemNo = Integer.parseInt(rawItemNo);
-        } catch (NumberFormatException error) {
-            itemNo = 0;
-        }
-        return itemNo;
 
     }
 
