@@ -3,7 +3,6 @@ import  java.util.Scanner;
 public class Duke {
 
     public static final String BYE_MESSAGE = "\n\tSee you! Have a nice day!\n";
-    public static final String UNIDENTIFIED_MESSAGE = "\n\tSorry! :( I don't understand.\n";
     public static final String DEADLINE_IDENTIFIER = "/by ";
     public static final String EVENT_IDENTIFIER = "/on ";
 
@@ -30,8 +29,9 @@ public class Duke {
 
         while(true) {
             //the following code interprets the command entered by the user and takes appropriate actions.
-            CommandType type = command.extractType();
-            switch (type) {
+            try {
+                CommandType type = command.extractType();
+                switch (type) {
                 case EXIT:
                     System.out.println(BYE_MESSAGE);
                     break;
@@ -44,20 +44,25 @@ public class Duke {
                     break;
                 case TODO:
                     executeAdd(command.getMessage(), tasks, CommandType.TODO);
+                    addMessage(tasks);
                     break;
                 case DEADLINE:
                     executeAdd(command.getMessage(), tasks, CommandType.DEADLINE);
+                    addMessage(tasks);
                     break;
                 case EVENT:
                     executeAdd(command.getMessage(), tasks, CommandType.EVENT);
+                    addMessage(tasks);
                     break;
-                case NONE:
-                    System.out.println(UNIDENTIFIED_MESSAGE);
+                }
+                if(type == CommandType.EXIT) {
+                    printLine();
+                    break;
+                }
+            } catch (DukeException error) {
+                System.out.println(error);
             }
             printLine();
-            if(type == CommandType.EXIT) {
-                break;
-            }
             command = new Command(in.nextLine());
         }
 
@@ -89,54 +94,60 @@ public class Duke {
      * @param tasks the list of tasks
      * @param type the type of task
      */
-    private static void executeAdd(String command, Task[] tasks, CommandType type) {
+    private static void executeAdd(String command, Task[] tasks, CommandType type) throws DukeException {
 
-        boolean isCorrect = false;
-        switch (type) {
-        case TODO:
-            isCorrect = true;
-            String todoName = command.trim().substring(5, command.length());
-            tasks[Task.getNoOfTasks()] = new Todo(todoName);
-            break;
-        case DEADLINE:
-            if(command.contains(DEADLINE_IDENTIFIER)) {
-                isCorrect = true;
+        try {
+            switch (type) {
+            case TODO:
+                String todoName = command.trim().substring(5, command.length());
+                tasks[Task.getNoOfTasks()] = new Todo(todoName);
+                break;
+            case DEADLINE:
+                if (command.length() < 10) {
+                    throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+                }
+                if (!command.contains(DEADLINE_IDENTIFIER)) {
+                    throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
+                }
                 String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
-                String deadlineName = rawName[0].substring(9, rawName[0].length()-1);
+//                if () {
+//                    throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+//                }
+                String deadlineName = rawName[0].substring(9, rawName[0].length() - 1);
                 String by = rawName[1];
                 tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
-            }
-            break;
-        case EVENT:
-            if(command.contains(EVENT_IDENTIFIER)) {
-                isCorrect = true;
+                break;
+            case EVENT:
+                if (command.length() < 7) {
+                    throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+                }
+                if (!command.contains(EVENT_IDENTIFIER)) {
+                    throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
+                }
                 String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
-                String eventName = rawEventName[0].substring(6, rawEventName[0].length()-1);
+//                if (rawEventName[0].isEmpty()) {
+//                    throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+//                }
+                String eventName = rawEventName[0].substring(6, rawEventName[0].length() - 1);
                 String on = rawEventName[1];
                 tasks[Task.getNoOfTasks()] = new Event(eventName, on);
                 break;
             }
+        } catch (StringIndexOutOfBoundsException | ArrayIndexOutOfBoundsException e) {
+            throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
         }
-        addMessage(tasks, isCorrect);
-
     }
 
     /**displays the appropriate message after adding task
      *
      * @param tasks the list of tasks
-     * @param isCorrect to check if the command is correct
      */
-    private static void addMessage(Task[] tasks, boolean isCorrect) {
+    private static void addMessage(Task[] tasks) {
 
-        if(isCorrect) {
-            System.out.println("\n\tAdded task \"" + tasks[Task.getNoOfTasks() - 1] + "\" to your To-Do's!");
-            System.out.println("\tYou now have " + Task.getNoOfIncompleteTasks() + " incomplete task"
-                    + (Task.getNoOfIncompleteTasks() != 1 ? "s" : "") + ".");
-            System.out.println("\tTo view the To-Do list simply type \"list\".\n");
-        }
-        else {
-            System.out.println("\n\tOops! Wrong format given for the command :\\\n");
-        }
+        System.out.println("\n\tAdded task \"" + tasks[Task.getNoOfTasks() - 1] + "\" to your To-Do's!");
+        System.out.println("\tYou now have " + Task.getNoOfIncompleteTasks() + " incomplete task"
+                + (Task.getNoOfIncompleteTasks() != 1 ? "s" : "") + ".");
+        System.out.println("\tTo view the To-Do list simply type \"list\".\n");
 
     }
 
