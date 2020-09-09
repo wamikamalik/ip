@@ -1,4 +1,4 @@
-package duke;
+package duke.exception;
 
 public enum ExceptionType {
     MISSING_DESCRIPTION("\n\tOh no! The Task description is missing :(\n"),

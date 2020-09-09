@@ -1,11 +1,11 @@
-import duke.Task;
-import duke.Todo;
-import duke.Deadline;
-import duke.Event;
-import duke.Command;
-import duke.CommandType;
-import duke.DukeException;
-import duke.ExceptionType;
+import duke.task.Task;
+import duke.task.Todo;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.command.Command;
+import duke.command.CommandType;
+import duke.exception.DukeException;
+import duke.exception.ExceptionType;
 
 import  java.util.Scanner;
 
