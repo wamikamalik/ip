@@ -21,7 +21,7 @@ public class Duke {
 
     public static void main(String[] args) {
 
-        welcomeMessage();
+        printWelcomeMessage();
 
         Scanner in = new Scanner(System.in);
         Command command = new Command(in.nextLine());
@@ -71,7 +71,7 @@ public class Duke {
     /** Print the welcome massage.
      *
      */
-    private static void welcomeMessage() {
+    private static void printWelcomeMessage() {
 
         String logo = " __A__   _C__   _E__\n"
                     + "/  _  \\ /  __| |  __|\n"
@@ -106,13 +106,10 @@ public class Duke {
                 if (command.length() < 10) {
                     throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
                 }
-                if (!command.contains(DEADLINE_IDENTIFIER)) {
+                if (!command.contains(DEADLINE_IDENTIFIER) && !command.contains("/by")) {
                     throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
                 }
                 String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
-//                if () {
-//                    throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
-//                }
                 String deadlineName = rawName[0].substring(9, rawName[0].length() - 1);
                 String by = rawName[1];
                 tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
@@ -121,13 +118,10 @@ public class Duke {
                 if (command.length() < 7) {
                     throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
                 }
-                if (!command.contains(EVENT_IDENTIFIER)) {
+                if (!command.contains(EVENT_IDENTIFIER) && !command.contains("/on")) {
                     throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
                 }
                 String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
-//                if (rawEventName[0].isEmpty()) {
-//                    throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
-//                }
                 String eventName = rawEventName[0].substring(6, rawEventName[0].length() - 1);
                 String on = rawEventName[1];
                 tasks[Task.getNoOfTasks()] = new Event(eventName, on);
@@ -177,11 +171,11 @@ public class Duke {
      * @param tasks the list of tasks
      * @param itemNo the item to be deleted
      */
-    private static void executeDone(Task[] tasks, int itemNo) {
+    private static void executeDone(Task[] tasks, int itemNo) throws DukeException {
 
         if(itemNo == 0) {
-            System.out.println("\n\tPlease enter a valid item number.\n");
-        }else if(itemNo >Task.getNoOfTasks()) {
+            throw new DukeException(ExceptionType.NOT_A_NUMBER);
+        } else if(itemNo >Task.getNoOfTasks()) {
             System.out.println("\n\tItem "+ itemNo +" does not exist.\n");
         } else if(tasks[itemNo -1].isDone()) {
             System.out.println("\n\tThis task was marked as done earlier!");
