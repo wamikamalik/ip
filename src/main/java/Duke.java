@@ -99,7 +99,7 @@ public class Duke {
         switch (type) {
         case TODO:
             try {
-                String todoName = command.substring(5, command.length()).trim();
+                String todoName = command.substring(5).trim();
                 tasks[Task.getNoOfTasks()] = new Todo(todoName);
             } catch (StringIndexOutOfBoundsException e) {
                 throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
@@ -116,7 +116,7 @@ public class Duke {
             if(rawName.length<2) {
                 throw new DukeException(ExceptionType.MISSING_ON_BY);
             }
-            String deadlineName = rawName[0].substring(9, rawName[0].length()).trim();
+            String deadlineName = rawName[0].substring(9).trim();
             String by = rawName[1].trim();
             tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
             break;
@@ -131,7 +131,7 @@ public class Duke {
             if(rawEventName.length<2) {
                 throw new DukeException(ExceptionType.MISSING_ON_BY);
             }
-            String eventName = rawEventName[0].substring(6, rawEventName[0].length()).trim();
+            String eventName = rawEventName[0].substring(6).trim();
             String on = rawEventName[1].trim();
             tasks[Task.getNoOfTasks()] = new Event(eventName, on);
             break;

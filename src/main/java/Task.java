@@ -1,4 +1,4 @@
-public class Task {
+public abstract class Task {
 
     /**Description of task*/
     private String name;
@@ -8,10 +8,6 @@ public class Task {
     private static int noOfTasks = 0;
     /**number of incomplete tasks*/
     public static int noOfIncompleteTasks = 0;
-
-    public Task() {
-        this("");
-    }
 
     public Task(String name) {
         this.name = name;
