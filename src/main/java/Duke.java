@@ -3,9 +3,8 @@ import  java.util.Scanner;
 public class Duke {
 
     public static final String BYE_MESSAGE = "\n\tSee you! Have a nice day!\n";
-    public static final String UNIDENTIFIED_MESSAGE = "\n\tSorry! :( I don't understand.\n";
-    public static final String DEADLINE_IDENTIFIER = "/by ";
-    public static final String EVENT_IDENTIFIER = "/on ";
+    public static final String DEADLINE_IDENTIFIER = "/by";
+    public static final String EVENT_IDENTIFIER = "/on";
 
     /**
      * prints a line of 100 character length.
@@ -22,7 +21,7 @@ public class Duke {
 
     public static void main(String[] args) {
 
-        welcomeMessage();
+        printWelcomeMessage();
 
         Scanner in = new Scanner(System.in);
         Command command = new Command(in.nextLine());
@@ -30,8 +29,9 @@ public class Duke {
 
         while(true) {
             //the following code interprets the command entered by the user and takes appropriate actions.
-            CommandType type = command.extractType();
-            switch (type) {
+            try {
+                CommandType type = command.extractType();
+                switch (type) {
                 case EXIT:
                     System.out.println(BYE_MESSAGE);
                     break;
@@ -44,20 +44,25 @@ public class Duke {
                     break;
                 case TODO:
                     executeAdd(command.getMessage(), tasks, CommandType.TODO);
+                    addMessage(tasks);
                     break;
                 case DEADLINE:
                     executeAdd(command.getMessage(), tasks, CommandType.DEADLINE);
+                    addMessage(tasks);
                     break;
                 case EVENT:
                     executeAdd(command.getMessage(), tasks, CommandType.EVENT);
+                    addMessage(tasks);
                     break;
-                case NONE:
-                    System.out.println(UNIDENTIFIED_MESSAGE);
+                }
+                if(type == CommandType.EXIT) {
+                    printLine();
+                    break;
+                }
+            } catch (DukeException error) {
+                System.out.println(error);
             }
             printLine();
-            if(type == CommandType.EXIT) {
-                break;
-            }
             command = new Command(in.nextLine());
         }
 
@@ -66,7 +71,7 @@ public class Duke {
     /** Print the welcome massage.
      *
      */
-    private static void welcomeMessage() {
+    private static void printWelcomeMessage() {
 
         String logo = " __A__   _C__   _E__\n"
                     + "/  _  \\ /  __| |  __|\n"
@@ -89,54 +94,60 @@ public class Duke {
      * @param tasks the list of tasks
      * @param type the type of task
      */
-    private static void executeAdd(String command, Task[] tasks, CommandType type) {
+    private static void executeAdd(String command, Task[] tasks, CommandType type) throws DukeException {
 
-        boolean isCorrect = false;
         switch (type) {
         case TODO:
-            isCorrect = true;
-            String todoName = command.trim().substring(5, command.length());
-            tasks[Task.getNoOfTasks()] = new Todo(todoName);
+            try {
+                String todoName = command.substring(5).trim();
+                tasks[Task.getNoOfTasks()] = new Todo(todoName);
+            } catch (StringIndexOutOfBoundsException e) {
+                throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+            }
             break;
         case DEADLINE:
-            if(command.contains(DEADLINE_IDENTIFIER)) {
-                isCorrect = true;
-                String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
-                String deadlineName = rawName[0].substring(9, rawName[0].length()-1);
-                String by = rawName[1];
-                tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
+            String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
+            if (rawName[0].trim().equalsIgnoreCase("deadline")) {
+                throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
             }
+            if (!command.contains(DEADLINE_IDENTIFIER)) {
+                throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
+            }
+            if(rawName.length<2) {
+                throw new DukeException(ExceptionType.MISSING_ON_BY);
+            }
+            String deadlineName = rawName[0].substring(9).trim();
+            String by = rawName[1].trim();
+            tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
             break;
         case EVENT:
-            if(command.contains(EVENT_IDENTIFIER)) {
-                isCorrect = true;
-                String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
-                String eventName = rawEventName[0].substring(6, rawEventName[0].length()-1);
-                String on = rawEventName[1];
-                tasks[Task.getNoOfTasks()] = new Event(eventName, on);
-                break;
+            String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
+            if (rawEventName[0].trim().equalsIgnoreCase("event")) {
+                throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
             }
+            if (!command.contains(EVENT_IDENTIFIER)) {
+                throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
+            }
+            if(rawEventName.length<2) {
+                throw new DukeException(ExceptionType.MISSING_ON_BY);
+            }
+            String eventName = rawEventName[0].substring(6).trim();
+            String on = rawEventName[1].trim();
+            tasks[Task.getNoOfTasks()] = new Event(eventName, on);
+            break;
         }
-        addMessage(tasks, isCorrect);
-
     }
 
     /**displays the appropriate message after adding task
      *
      * @param tasks the list of tasks
-     * @param isCorrect to check if the command is correct
      */
-    private static void addMessage(Task[] tasks, boolean isCorrect) {
+    private static void addMessage(Task[] tasks) {
 
-        if(isCorrect) {
-            System.out.println("\n\tAdded task \"" + tasks[Task.getNoOfTasks() - 1] + "\" to your To-Do's!");
-            System.out.println("\tYou now have " + Task.getNoOfIncompleteTasks() + " incomplete task"
-                    + (Task.getNoOfIncompleteTasks() != 1 ? "s" : "") + ".");
-            System.out.println("\tTo view the To-Do list simply type \"list\".\n");
-        }
-        else {
-            System.out.println("\n\tOops! Wrong format given for the command :\\\n");
-        }
+        System.out.println("\n\tAdded task \"" + tasks[Task.getNoOfTasks() - 1] + "\" to your To-Do's!");
+        System.out.println("\tYou now have " + Task.getNoOfIncompleteTasks() + " incomplete task"
+                + (Task.getNoOfIncompleteTasks() != 1 ? "s" : "") + ".");
+        System.out.println("\tTo view the To-Do list simply type \"list\".\n");
 
     }
 
@@ -149,7 +160,7 @@ public class Duke {
 
         int itemNo;
         try {
-            String rawItemNo = command.trim().substring(5, command.length());
+            String rawItemNo = command.trim().substring(5, command.length()).trim();
             if(rawItemNo.endsWith(".")) {
                 rawItemNo = rawItemNo.substring(0,rawItemNo.length()-1);
             }
@@ -166,11 +177,11 @@ public class Duke {
      * @param tasks the list of tasks
      * @param itemNo the item to be deleted
      */
-    private static void executeDone(Task[] tasks, int itemNo) {
+    private static void executeDone(Task[] tasks, int itemNo) throws DukeException {
 
         if(itemNo == 0) {
-            System.out.println("\n\tPlease enter a valid item number.\n");
-        }else if(itemNo >Task.getNoOfTasks()) {
+            throw new DukeException(ExceptionType.NOT_A_NUMBER);
+        } else if(itemNo >Task.getNoOfTasks()) {
             System.out.println("\n\tItem "+ itemNo +" does not exist.\n");
         } else if(tasks[itemNo -1].isDone()) {
             System.out.println("\n\tThis task was marked as done earlier!");

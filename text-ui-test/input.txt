@@ -1,12 +1,23 @@
 hahaaaha
+       done      0
+todo
+list
 todo read book
+list
 done 3e4
+deadLINE
 DeadLine submit assign /by Sunday
-done 1
+deadline /by
+deadline create folder /by
+deadline create folder
+done         1
+list
 EvenT helloWorld
+event    /on
+event training /on
 EvenT say hello /on 25th Sept @ 5PM
 list
-done 7
+done 7.
 done 1
 
 done 2
