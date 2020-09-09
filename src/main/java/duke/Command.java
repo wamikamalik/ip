@@ -1,8 +1,10 @@
+package duke;
+
 public class Command {
 
     private String message;
 
-    Command(String message) {
+    public Command(String message) {
         this.message = message;
     }
 
