@@ -1,12 +1,17 @@
+package duke.command;
+
+import duke.exception.DukeException;
+import duke.exception.ExceptionType;
+
 public class Command {
 
     private String message;
 
-    Command(String message) {
+    public Command(String message) {
         this.message = message;
     }
 
-    public CommandType extractType() throws DukeException{
+    public CommandType extractType() throws DukeException {
         message = message.trim();
         String command = message;
         if(message.contains(" ")) {

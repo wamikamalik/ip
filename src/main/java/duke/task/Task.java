@@ -1,3 +1,5 @@
+package duke.task;
+
 public abstract class Task {
 
     /**Description of task*/
