@@ -3,8 +3,8 @@ import  java.util.Scanner;
 public class Duke {
 
     public static final String BYE_MESSAGE = "\n\tSee you! Have a nice day!\n";
-    public static final String DEADLINE_IDENTIFIER = "/by ";
-    public static final String EVENT_IDENTIFIER = "/on ";
+    public static final String DEADLINE_IDENTIFIER = "/by";
+    public static final String EVENT_IDENTIFIER = "/on";
 
     /**
      * prints a line of 100 character length.
@@ -96,39 +96,45 @@ public class Duke {
      */
     private static void executeAdd(String command, Task[] tasks, CommandType type) throws DukeException {
 
-        try {
-            switch (type) {
-            case TODO:
-                String todoName = command.trim().substring(5, command.length());
+        switch (type) {
+        case TODO:
+            try {
+                String todoName = command.substring(5, command.length()).trim();
                 tasks[Task.getNoOfTasks()] = new Todo(todoName);
-                break;
-            case DEADLINE:
-                if (command.length() < 10) {
-                    throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
-                }
-                if (!command.contains(DEADLINE_IDENTIFIER) && !command.contains("/by")) {
-                    throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
-                }
-                String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
-                String deadlineName = rawName[0].substring(9, rawName[0].length() - 1);
-                String by = rawName[1];
-                tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
-                break;
-            case EVENT:
-                if (command.length() < 7) {
-                    throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
-                }
-                if (!command.contains(EVENT_IDENTIFIER) && !command.contains("/on")) {
-                    throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
-                }
-                String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
-                String eventName = rawEventName[0].substring(6, rawEventName[0].length() - 1);
-                String on = rawEventName[1];
-                tasks[Task.getNoOfTasks()] = new Event(eventName, on);
-                break;
+            } catch (StringIndexOutOfBoundsException e) {
+                throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
             }
-        } catch (StringIndexOutOfBoundsException | ArrayIndexOutOfBoundsException e) {
-            throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+            break;
+        case DEADLINE:
+            String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
+            if (rawName[0].trim().equalsIgnoreCase("deadline")) {
+                throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+            }
+            if (!command.contains(DEADLINE_IDENTIFIER)) {
+                throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
+            }
+            if(rawName.length<2) {
+                throw new DukeException(ExceptionType.MISSING_ON_BY);
+            }
+            String deadlineName = rawName[0].substring(9, rawName[0].length()).trim();
+            String by = rawName[1].trim();
+            tasks[Task.getNoOfTasks()] = new Deadline(deadlineName, by);
+            break;
+        case EVENT:
+            String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
+            if (rawEventName[0].trim().equalsIgnoreCase("event")) {
+                throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+            }
+            if (!command.contains(EVENT_IDENTIFIER)) {
+                throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
+            }
+            if(rawEventName.length<2) {
+                throw new DukeException(ExceptionType.MISSING_ON_BY);
+            }
+            String eventName = rawEventName[0].substring(6, rawEventName[0].length()).trim();
+            String on = rawEventName[1].trim();
+            tasks[Task.getNoOfTasks()] = new Event(eventName, on);
+            break;
         }
     }
 
@@ -154,7 +160,7 @@ public class Duke {
 
         int itemNo;
         try {
-            String rawItemNo = command.trim().substring(5, command.length());
+            String rawItemNo = command.trim().substring(5, command.length()).trim();
             if(rawItemNo.endsWith(".")) {
                 rawItemNo = rawItemNo.substring(0,rawItemNo.length()-1);
             }

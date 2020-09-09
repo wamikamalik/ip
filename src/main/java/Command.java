@@ -7,9 +7,10 @@ public class Command {
     }
 
     public CommandType extractType() throws DukeException{
+        message = message.trim();
         String command = message;
         if(message.contains(" ")) {
-            command = message.trim().split(" ")[0];
+            command = message.split(" ")[0];
         }
         if(command.equalsIgnoreCase("bye")) {
             return CommandType.EXIT;
