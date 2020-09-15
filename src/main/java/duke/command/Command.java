@@ -23,6 +23,8 @@ public class Command {
             return CommandType.LIST;
         } else if(command.equalsIgnoreCase("done")) {
             return CommandType.MARK_DONE;
+        } else if(command.equalsIgnoreCase("delete")) {
+            return CommandType.DELETE;
         } else if(message.length()<4) {
             throw new DukeException(ExceptionType.UNIDENTIFIED);
         }

@@ -39,6 +39,14 @@ public abstract class Task {
         return noOfIncompleteTasks;
     }
 
+    public static void setNoOfTasks(int noOfTasks) {
+        Task.noOfTasks = noOfTasks;
+    }
+
+    public static void setNoOfIncompleteTasks(int noOfIncompleteTasks) {
+        Task.noOfIncompleteTasks = noOfIncompleteTasks;
+    }
+
     public boolean isDone() {
         return isDone;
     }

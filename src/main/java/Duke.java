@@ -15,6 +15,8 @@ public class Duke {
     public static final String BYE_MESSAGE = "\n\tSee you! Have a nice day!\n";
     public static final String DEADLINE_IDENTIFIER = "/by";
     public static final String EVENT_IDENTIFIER = "/on";
+    public static final int DONE_LEN = 5;
+    public static final int DELETE_LEN = 7;
     private static ArrayList<Task> tasks = new ArrayList<>();
 
     /**
@@ -36,6 +38,7 @@ public class Duke {
 
         Scanner in = new Scanner(System.in);
         Command command = new Command(in.nextLine());
+        int itemNo;
 
         while(true) {
             //the following code interprets the command entered by the user and takes appropriate actions.
@@ -49,8 +52,12 @@ public class Duke {
                     listTasks();
                     break;
                 case MARK_DONE:
-                    int itemNo = extractItemNo(command.getMessage());
+                    itemNo = extractItemNo(command.getMessage(), DONE_LEN);
                     executeDone(itemNo);
+                    break;
+                case DELETE:
+                    itemNo = extractItemNo(command.getMessage(), DELETE_LEN);
+                    executeDelete(itemNo);
                     break;
                 case TODO:
                     executeAdd(command.getMessage(), CommandType.TODO);
@@ -164,11 +171,11 @@ public class Duke {
      * @param command the done command given
      * @return the item number
      */
-    private static int extractItemNo(String command) {
+    private static int extractItemNo(String command, int commandLen) {
 
         int itemNo;
         try {
-            String rawItemNo = command.trim().substring(5, command.length()).trim();
+            String rawItemNo = command.trim().substring(commandLen, command.length()).trim();
             if(rawItemNo.endsWith(".")) {
                 rawItemNo = rawItemNo.substring(0,rawItemNo.length()-1);
             }
@@ -182,24 +189,47 @@ public class Duke {
 
     /** Mark the given item as done.
      *
-     * @param itemNo the item to be deleted
+     * @param itemNo index of the item to be marked as done.
      */
     private static void executeDone(int itemNo) throws DukeException {
 
         if(itemNo == 0) {
             throw new DukeException(ExceptionType.NOT_A_NUMBER);
         } else if(itemNo >Task.getNoOfTasks()) {
-            System.out.println("\n\tItem "+ itemNo +" does not exist.\n");
+            System.out.println("\n\tItem " + itemNo + " does not exist.\n");
         } else if(tasks.get(itemNo -1).isDone()) {
             System.out.println("\n\tThis task was marked as done earlier!");
             System.out.println("\tTo see the list of incomplete tasks simply type \"list\".\n");
         } else {
             tasks.get(itemNo -1).markAsDone();
             System.out.println("\n\tGreat! I have updated your To-Do list for the following task:");
-            System.out.println("\t\t ["+ tasks.get(itemNo -1).getIcon() + "] "
-                    + tasks.get(itemNo -1).getName()+"\n");
+            System.out.println("\t\t " + tasks.get(itemNo -1) + "\n");
         }
 
+    }
+
+    /** deletes the given item from the list.
+     *
+     * @param itemNo index of the item to be deleted.
+     */
+    private static void executeDelete(int itemNo) throws DukeException {
+        if(itemNo == 0) {
+            throw new DukeException(ExceptionType.NOT_A_NUMBER);
+        } else if(itemNo >Task.getNoOfTasks()) {
+            System.out.println("\n\tItem " + itemNo + " does not exist.\n");
+        } else {
+            Task taskToDelete = tasks.get(itemNo -1);
+            if(!taskToDelete.isDone()) {
+                Task.setNoOfIncompleteTasks(Task.getNoOfIncompleteTasks() - 1);
+            }
+            Task.setNoOfTasks(Task.getNoOfTasks() - 1);
+            tasks.remove(itemNo -1);
+            System.out.println("\n\tOkie! I have removed the following task:");
+            System.out.println("\t\t " + taskToDelete);
+            System.out.println("\tYou now have " + Task.getNoOfIncompleteTasks() + " incomplete task"
+                    + (Task.getNoOfIncompleteTasks() != 1 ? "s" : "") + "." + "\n");
+
+        }
     }
 
     /** List the tasks.
