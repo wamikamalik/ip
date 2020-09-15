@@ -1,3 +1,4 @@
+import duke.Storage.FileManager;
 import duke.task.Task;
 import duke.task.Todo;
 import duke.task.Deadline;
@@ -8,6 +9,8 @@ import duke.exception.DukeException;
 import duke.exception.ExceptionType;
 
 import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import  java.util.Scanner;
 
 public class Duke {
@@ -20,6 +23,8 @@ public class Duke {
     public static final int DEADLINE_LEN = 9;
     public static final int EVENT_LEN = 6;
     private static ArrayList<Task> tasks = new ArrayList<>();
+    private static final String FILE = "duke.txt";
+    private static final String DIR = "data";
 
     public static void printLine() {
 
@@ -33,10 +38,16 @@ public class Duke {
     public static void main(String[] args) {
 
         printWelcomeMessage();
-
+        FileManager file = new FileManager(FILE, DIR);
         Scanner in = new Scanner(System.in);
         Command command = new Command(in.nextLine());
         int itemNo;
+        try {
+            file.loadData(tasks);
+        } catch (FileNotFoundException e) {
+            System.out.println("\t\nThe World has gone crazy!");
+            e.printStackTrace();
+        }
 
         while(true) {
             //the following code interprets the command entered by the user and takes appropriate actions.
@@ -44,6 +55,7 @@ public class Duke {
                 CommandType type = command.extractType();
                 switch (type) {
                 case EXIT:
+                    file.updateList(tasks);
                     System.out.println(BYE_MESSAGE);
                     break;
                 case LIST:
@@ -74,7 +86,7 @@ public class Duke {
                     printLine();
                     break;
                 }
-            } catch (DukeException error) {
+            } catch (DukeException | IOException error) {
                 System.out.println(error);
             }
             printLine();
@@ -104,7 +116,7 @@ public class Duke {
      *
      * @param command task name given by the user.
      * @param type the type of task.
-     * @throws DukeException
+     * @throws DukeException duke error.
      */
     private static void executeAdd(String command, CommandType type) throws DukeException {
 
@@ -140,7 +152,7 @@ public class Duke {
      * @param rawName array of description and deadline/date.
      * @param taskName type of task.
      * @param taskIdentifier on or by task.
-     * @throws DukeException
+     * @throws DukeException duke error.
      */
     private static void checkCommand(String command, String[] rawName, String taskName, String taskIdentifier) throws DukeException {
         if (rawName[0].trim().equalsIgnoreCase(taskName)) {
@@ -190,7 +202,7 @@ public class Duke {
     /** Mark the given item as done.
      *
      * @param itemNo index of the item to be marked as done.
-     * @throws DukeException
+     * @throws DukeException duke error.
      */
     private static void executeDone(int itemNo) throws DukeException {
 
@@ -212,7 +224,7 @@ public class Duke {
     /** Deletes the given item from the list.
      *
      * @param itemNo index of the item to be deleted.
-     * @throws DukeException
+     * @throws DukeException duke error.
      */
     private static void executeDelete(int itemNo) throws DukeException {
         if(itemNo == 0) {
