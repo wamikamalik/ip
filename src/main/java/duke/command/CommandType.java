@@ -6,5 +6,6 @@ public enum CommandType {
     MARK_DONE,
     TODO,
     EVENT,
-    DEADLINE
+    DEADLINE,
+    DELETE
 }
