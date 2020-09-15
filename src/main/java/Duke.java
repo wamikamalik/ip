@@ -7,6 +7,8 @@ import duke.command.CommandType;
 import duke.exception.DukeException;
 import duke.exception.ExceptionType;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import  java.util.Scanner;
 
 public class Duke {
@@ -14,6 +16,8 @@ public class Duke {
     public static final String BYE_MESSAGE = "\n\tSee you! Have a nice day!\n";
     public static final String DEADLINE_IDENTIFIER = "/by";
     public static final String EVENT_IDENTIFIER = "/on";
+    private static final String FILE = "duke.txt";
+    private static final String DIR = "data";
 
     /**
      * prints a line of 100 character length.
@@ -31,10 +35,16 @@ public class Duke {
     public static void main(String[] args) {
 
         printWelcomeMessage();
-
+        FileManager file = new FileManager(FILE, DIR);
         Scanner in = new Scanner(System.in);
         Command command = new Command(in.nextLine());
         Task[] tasks = new Task[100];
+        try {
+            file.loadData(tasks);
+        } catch (FileNotFoundException e) {
+            System.out.println("\t\nThe World has gone crazy!");
+            e.printStackTrace();
+        }
 
         while(true) {
             //the following code interprets the command entered by the user and takes appropriate actions.
@@ -42,6 +52,7 @@ public class Duke {
                 CommandType type = command.extractType();
                 switch (type) {
                 case EXIT:
+                    file.updateList(tasks);
                     System.out.println(BYE_MESSAGE);
                     break;
                 case LIST:
@@ -68,7 +79,7 @@ public class Duke {
                     printLine();
                     break;
                 }
-            } catch (DukeException error) {
+            } catch (DukeException | IOException error) {
                 System.out.println(error);
             }
             printLine();
