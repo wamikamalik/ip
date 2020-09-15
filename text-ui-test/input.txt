@@ -17,9 +17,12 @@ event    /on
 event training /on
 EvenT say hello /on 25th Sept @ 5PM
 list
-done 7.
+delete 2
+delete 7
+done 5.
 done 1
 
 done 2
+delete 1
 list
 bye
