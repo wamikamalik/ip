@@ -15,14 +15,12 @@ public class Duke {
     public static final String BYE_MESSAGE = "\n\tSee you! Have a nice day!\n";
     public static final String DEADLINE_IDENTIFIER = "/by";
     public static final String EVENT_IDENTIFIER = "/on";
-    public static final int DONE_LEN = 5;
+    public static final int DONE_TODO_LEN = 5;
     public static final int DELETE_LEN = 7;
+    public static final int DEADLINE_LEN = 9;
+    public static final int EVENT_LEN = 6;
     private static ArrayList<Task> tasks = new ArrayList<>();
 
-    /**
-     * prints a line of 100 character length.
-     *
-     */
     public static void printLine() {
 
         for(int i = 0; i<100; i++) {
@@ -52,7 +50,7 @@ public class Duke {
                     listTasks();
                     break;
                 case MARK_DONE:
-                    itemNo = extractItemNo(command.getMessage(), DONE_LEN);
+                    itemNo = extractItemNo(command.getMessage(), DONE_TODO_LEN);
                     executeDone(itemNo);
                     break;
                 case DELETE:
@@ -85,9 +83,6 @@ public class Duke {
 
     }
 
-    /** Print the welcome massage.
-     *
-     */
     private static void printWelcomeMessage() {
 
         String logo = " __A__   _C__   _E__\n"
@@ -107,15 +102,16 @@ public class Duke {
 
     /** Adds the new task to the list.
      *
-     * @param command task name given by the user
-     * @param type the type of task
+     * @param command task name given by the user.
+     * @param type the type of task.
+     * @throws DukeException
      */
     private static void executeAdd(String command, CommandType type) throws DukeException {
 
         switch (type) {
         case TODO:
             try {
-                String todoName = command.substring(5).trim();
+                String todoName = command.substring(DONE_TODO_LEN).trim();
                 tasks.add(new Todo(todoName));
             } catch (StringIndexOutOfBoundsException e) {
                 throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
@@ -123,38 +119,42 @@ public class Duke {
             break;
         case DEADLINE:
             String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
-            if (rawName[0].trim().equalsIgnoreCase("deadline")) {
-                throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
-            }
-            if (!command.contains(DEADLINE_IDENTIFIER)) {
-                throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
-            }
-            if(rawName.length<2) {
-                throw new DukeException(ExceptionType.MISSING_ON_BY);
-            }
-            String deadlineName = rawName[0].substring(9).trim();
+            checkCommand(command, rawName, "deadline", DEADLINE_IDENTIFIER);
+            String deadlineName = rawName[0].substring(DEADLINE_LEN).trim();
             String by = rawName[1].trim();
             tasks.add(new Deadline(deadlineName, by));
             break;
         case EVENT:
             String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
-            if (rawEventName[0].trim().equalsIgnoreCase("event")) {
-                throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
-            }
-            if (!command.contains(EVENT_IDENTIFIER)) {
-                throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
-            }
-            if(rawEventName.length<2) {
-                throw new DukeException(ExceptionType.MISSING_ON_BY);
-            }
-            String eventName = rawEventName[0].substring(6).trim();
+            checkCommand(command, rawEventName, "event", EVENT_IDENTIFIER);
+            String eventName = rawEventName[0].substring(EVENT_LEN).trim();
             String on = rawEventName[1].trim();
             tasks.add(new Event(eventName, on));
             break;
         }
     }
 
-    /**displays the appropriate message after adding task
+    /** checks the event or deadline command to ensure the input is right and complete.
+     *
+     * @param command task name given by the user.
+     * @param rawName array of description and deadline/date.
+     * @param taskName type of task.
+     * @param taskIdentifier on or by task.
+     * @throws DukeException
+     */
+    private static void checkCommand(String command, String[] rawName, String taskName, String taskIdentifier) throws DukeException {
+        if (rawName[0].trim().equalsIgnoreCase(taskName)) {
+            throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
+        }
+        if (!command.contains(taskIdentifier)) {
+            throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
+        }
+        if (rawName.length < 2) {
+            throw new DukeException(ExceptionType.MISSING_ON_BY);
+        }
+    }
+
+    /** Displays the appropriate message after adding task
      *
      */
     private static void addMessage() {
@@ -168,8 +168,8 @@ public class Duke {
 
     /** Get the item number from the command entered.
      *
-     * @param command the done command given
-     * @return the item number
+     * @param command the done command given.
+     * @return the item number.
      */
     private static int extractItemNo(String command, int commandLen) {
 
@@ -190,6 +190,7 @@ public class Duke {
     /** Mark the given item as done.
      *
      * @param itemNo index of the item to be marked as done.
+     * @throws DukeException
      */
     private static void executeDone(int itemNo) throws DukeException {
 
@@ -208,9 +209,10 @@ public class Duke {
 
     }
 
-    /** deletes the given item from the list.
+    /** Deletes the given item from the list.
      *
      * @param itemNo index of the item to be deleted.
+     * @throws DukeException
      */
     private static void executeDelete(int itemNo) throws DukeException {
         if(itemNo == 0) {
@@ -232,9 +234,6 @@ public class Duke {
         }
     }
 
-    /** List the tasks.
-     *
-     */
     private static void listTasks() {
 
         if(Task.getNoOfTasks()==0) {
