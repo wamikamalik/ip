@@ -15,6 +15,7 @@ list
 EvenT helloWorld
 event    /on
 event training /on
+done
 EvenT say hello /on 25th Sept @ 5PM
 list
 delete 2

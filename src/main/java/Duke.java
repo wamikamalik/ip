@@ -192,7 +192,7 @@ public class Duke {
                 rawItemNo = rawItemNo.substring(0,rawItemNo.length()-1);
             }
             itemNo = Integer.parseInt(rawItemNo);
-        } catch (NumberFormatException error) {
+        } catch (NumberFormatException | StringIndexOutOfBoundsException error) {
             itemNo = 0;
         }
         return itemNo;
