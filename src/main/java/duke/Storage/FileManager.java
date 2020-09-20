@@ -1,5 +1,6 @@
 package duke.Storage;
 
+import duke.task.TaskList;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.Task;
@@ -38,7 +39,8 @@ public class FileManager {
         }
     }
 
-    public void loadData(ArrayList<Task> tasks) throws FileNotFoundException {
+    public ArrayList<Task> loadData() throws FileNotFoundException {
+        ArrayList<Task> tasks = new ArrayList<>();
         Scanner s = new Scanner(file); // create a Scanner using the File as the source
         int taskNo = 0;
         while (s.hasNext()) {
@@ -59,9 +61,10 @@ public class FileManager {
             }
             taskNo+=1;
         }
+        return tasks;
     }
 
-    public void updateList(ArrayList<Task> tasks) throws IOException {
+    public void updateList(TaskList tasks) throws IOException {
         FileWriter fw = new FileWriter(file);
         String description;
         String done;
