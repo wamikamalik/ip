@@ -9,7 +9,6 @@ import java.util.ArrayList;
 
 public class TaskList extends ArrayList<Task>{
 
-    //private ArrayList<Task> tasks;
     public static final int DEADLINE_LEN = 9;
     public static final int EVENT_LEN = 6;
     public static final String DEADLINE_IDENTIFIER = "/by";
@@ -26,11 +25,12 @@ public class TaskList extends ArrayList<Task>{
 
     /** Adds the new task to the list.
      *
+     * @param parser the command parser for the given input.
      * @param command task name given by the user.
      * @param type the type of task.
      * @throws DukeException duke error.
      */
-    public void add(String command, CommandType type) throws DukeException {
+    public void add(Parser parser, String command, CommandType type) throws DukeException {
 
         switch (type) {
         case TODO:
@@ -43,14 +43,14 @@ public class TaskList extends ArrayList<Task>{
             break;
         case DEADLINE:
             String[] rawName = command.trim().split(DEADLINE_IDENTIFIER);
-            Parser.checkCommand(command, rawName, "deadline", DEADLINE_IDENTIFIER);
+            parser.checkCommand(rawName, "deadline", DEADLINE_IDENTIFIER);
             String deadlineName = rawName[0].substring(DEADLINE_LEN).trim();
             String by = rawName[1].trim();
             super.add(new Deadline(deadlineName, by));
             break;
         case EVENT:
             String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
-            Parser.checkCommand(command, rawEventName, "event", EVENT_IDENTIFIER);
+            parser.checkCommand(rawEventName, "event", EVENT_IDENTIFIER);
             String eventName = rawEventName[0].substring(EVENT_LEN).trim();
             String on = rawEventName[1].trim();
             super.add(new Event(eventName, on));

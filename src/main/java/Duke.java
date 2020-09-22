@@ -19,6 +19,7 @@ public class Duke {
     private TaskList tasks;
     private Ui ui;
     private FileManager file;
+    private Parser parser;
 
     public Duke() {
         ui = new Ui();
@@ -44,7 +45,8 @@ public class Duke {
             //the following code interprets the command entered by the user and takes appropriate actions.
             try {
                 String fullCommand = ui.getCommand();
-                CommandType type = Parser.extractType(fullCommand);
+                parser = new Parser(fullCommand);
+                CommandType type = parser.extractType();
                 switch (type) {
                 case EXIT:
                     file.updateList(tasks);
@@ -55,25 +57,25 @@ public class Duke {
                     ui.listTasks(tasks);
                     break;
                 case MARK_DONE:
-                    itemNo = Parser.extractItemNo(fullCommand, DONE_TODO_LEN);
+                    itemNo = parser.extractItemNo(DONE_TODO_LEN);
                     Task setDone = tasks.done(itemNo);
                     ui.doneMessage(setDone);
                     break;
                 case DELETE:
-                    itemNo = Parser.extractItemNo(fullCommand, DELETE_LEN);
+                    itemNo = parser.extractItemNo(DELETE_LEN);
                     Task toDelete = tasks.delete(itemNo);
                     ui.deleteMessage(toDelete);
                     break;
                 case TODO:
-                    tasks.add(fullCommand, CommandType.TODO);
+                    tasks.add(parser, fullCommand, CommandType.TODO);
                     ui.addMessage(tasks);
                     break;
                 case DEADLINE:
-                    tasks.add(fullCommand, CommandType.DEADLINE);
+                    tasks.add(parser, fullCommand, CommandType.DEADLINE);
                     ui.addMessage(tasks);
                     break;
                 case EVENT:
-                    tasks.add(fullCommand, CommandType.EVENT);
+                    tasks.add(parser, fullCommand, CommandType.EVENT);
                     ui.addMessage(tasks);
                     break;
                 }

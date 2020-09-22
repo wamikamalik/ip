@@ -5,7 +5,13 @@ import duke.exception.ExceptionType;
 
 public class Parser {
 
-    public static CommandType extractType(String message) throws DukeException {
+    private String message;
+
+    public Parser(String message) {
+        this.message = message;
+    }
+
+    public CommandType extractType() throws DukeException {
         //message = message.trim();
         String command = message.trim();
         if(command.contains(" ")) {
@@ -35,17 +41,16 @@ public class Parser {
 
     /** checks the event or deadline command to ensure the input is right and complete.
      *
-     * @param command task name given by the user.
      * @param rawName array of description and deadline/date.
      * @param taskName type of task.
      * @param taskIdentifier on or by task.
      * @throws DukeException duke error.
      */
-    public static void checkCommand(String command, String[] rawName, String taskName, String taskIdentifier) throws DukeException {
+    public void checkCommand(String[] rawName, String taskName, String taskIdentifier) throws DukeException {
         if (rawName[0].trim().equalsIgnoreCase(taskName)) {
             throw new DukeException(ExceptionType.MISSING_DESCRIPTION);
         }
-        if (!command.contains(taskIdentifier)) {
+        if (!message.contains(taskIdentifier)) {
             throw new DukeException(ExceptionType.MISSING_IDENTIFIER);
         }
         if (rawName.length < 2) {
@@ -55,14 +60,14 @@ public class Parser {
 
     /** Get the item number from the command entered.
      *
-     * @param command the done command given.
+     * @param commandLen the length of command given.
      * @return the item number.
      */
-    public static int extractItemNo(String command, int commandLen) {
+    public int extractItemNo(int commandLen) {
 
         int itemNo;
         try {
-            String rawItemNo = command.trim().substring(commandLen, command.length()).trim();
+            String rawItemNo = message.trim().substring(commandLen, message.length()).trim();
             if(rawItemNo.endsWith(".")) {
                 rawItemNo = rawItemNo.substring(0,rawItemNo.length()-1);
             }
