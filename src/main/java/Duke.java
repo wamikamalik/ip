@@ -19,7 +19,6 @@ public class Duke {
     private TaskList tasks;
     private Ui ui;
     private FileManager file;
-    private Parser parser;
 
     public Duke() {
         ui = new Ui();
@@ -45,7 +44,7 @@ public class Duke {
             //the following code interprets the command entered by the user and takes appropriate actions.
             try {
                 String fullCommand = ui.getCommand();
-                parser = new Parser(fullCommand);
+                Parser parser = new Parser(fullCommand);
                 CommandType type = parser.extractType();
                 switch (type) {
                 case EXIT:
@@ -65,6 +64,11 @@ public class Duke {
                     itemNo = parser.extractItemNo(DELETE_LEN);
                     Task toDelete = tasks.delete(itemNo);
                     ui.deleteMessage(toDelete);
+                    break;
+                case FIND:
+                    String keyword = parser.extractKeyword();
+                    TaskList tasksFound = new TaskList(tasks.find(keyword));
+                    ui.listMatchingTasks(tasksFound);
                     break;
                 case TODO:
                     tasks.add(parser, fullCommand, CommandType.TODO);

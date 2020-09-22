@@ -92,4 +92,15 @@ public class Ui {
 
     }
 
+    public void listMatchingTasks(TaskList tasksFound) {
+        if(tasksFound.size()==0) {
+            System.out.println("\n\tOoPsIEs! No matching tasks found.\n");
+        } else {
+            System.out.println("\n\tThese are the matching tasks in your list:");
+            for (int i = 0; i<tasksFound.size(); i += 1) {
+                System.out.println("\t\t"+ (i+1) + ". " + tasksFound.get(i));
+            }
+            System.out.println();
+        }
+    }
 }

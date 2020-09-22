@@ -101,4 +101,14 @@ public class TaskList extends ArrayList<Task>{
         }
     }
 
+    public ArrayList<Task> find(String keyword) {
+        ArrayList<Task> result = new ArrayList<>();
+        super.forEach(task -> {
+            if(task.toString().contains(keyword)) {
+                result.add(task);
+            }
+        });
+        return result;
+    }
+
 }
