@@ -103,4 +103,13 @@ public class TaskList extends ArrayList<Task>{
         }
     }
 
+    public ArrayList<Task> getToday() {
+        ArrayList<Task> dueToday = new ArrayList<>();
+        super.forEach(task -> {
+            if(Parser.isToday(task)) {
+                dueToday.add(task);
+            }
+        });
+        return dueToday;
+    }
 }

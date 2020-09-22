@@ -2,6 +2,7 @@ package duke.command;
 
 import duke.exception.DukeException;
 import duke.exception.ExceptionType;
+import duke.task.Task;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -115,6 +116,14 @@ public class Parser {
             throw new DukeException(ExceptionType.WRONG_DATE_FORMAT);
         }
         return (finalDate);
+    }
+
+    public static boolean isToday(Task task) {
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        if(task.toString().contains(today)) {
+            return true;
+        }
+        return false;
     }
 
 }
