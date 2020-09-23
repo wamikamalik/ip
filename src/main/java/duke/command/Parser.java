@@ -31,6 +31,8 @@ public class Parser {
             return CommandType.MARK_DONE;
         } else if(command.equalsIgnoreCase("delete")) {
             return CommandType.DELETE;
+        } else if(command.equalsIgnoreCase("find")) {
+            return CommandType.FIND;
         } else if(message.length()<4) {
             throw new DukeException(ExceptionType.UNIDENTIFIED);
         }
@@ -85,6 +87,17 @@ public class Parser {
 
     }
 
+    public String extractKeyword() throws DukeException {
+        String keyword;
+        String[] words = message.trim().split(" ");
+        if(words.length>1) {
+            keyword = words[1];
+        } else {
+            throw new DukeException(ExceptionType.MISSING_KEYWORD);
+        }
+        return keyword;
+    }
+
     public static String toDate(String date) throws DukeException {
         String finalDate;
         try {
@@ -125,5 +138,4 @@ public class Parser {
         }
         return false;
     }
-
 }

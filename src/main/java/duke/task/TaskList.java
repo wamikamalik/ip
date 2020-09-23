@@ -103,6 +103,16 @@ public class TaskList extends ArrayList<Task>{
         }
     }
 
+    public ArrayList<Task> find(String keyword) {
+        ArrayList<Task> result = new ArrayList<>();
+        super.forEach(task -> {
+            if(task.toString().contains(keyword)) {
+                result.add(task);
+            }
+        });
+        return result;
+    }
+
     public ArrayList<Task> getToday() {
         ArrayList<Task> dueToday = new ArrayList<>();
         super.forEach(task -> {
@@ -112,4 +122,5 @@ public class TaskList extends ArrayList<Task>{
         });
         return dueToday;
     }
+
 }

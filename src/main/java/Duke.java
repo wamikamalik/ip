@@ -71,6 +71,11 @@ public class Duke {
                     Task toDelete = tasks.delete(itemNo);
                     ui.deleteMessage(toDelete);
                     break;
+                case FIND:
+                    String keyword = parser.extractKeyword();
+                    TaskList tasksFound = new TaskList(tasks.find(keyword));
+                    ui.listMatchingTasks(tasksFound);
+                    break;
                 case TODO:
                     tasks.add(parser, fullCommand, CommandType.TODO);
                     ui.addMessage(tasks);
