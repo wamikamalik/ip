@@ -40,6 +40,7 @@ public class Duke {
         ui.printWelcomeMessage();
         boolean isExit = false;
         int itemNo;
+        
         ArrayList<Task> tasksToday = tasks.getToday();
         TaskList dueToday = new TaskList(tasksToday);
         ui.listTasksForToday(dueToday);
