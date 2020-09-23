@@ -2,6 +2,20 @@
 
 Ace is a desktop app personal assistant for managing tasks list, optimised for use via the Command Line Interface (CLI). You can put in your todos, deadlines and events and Ace will manage them for you. 
 
+* [Quick Start](#quick-start)
+* [Features](#features)
+    + [1. list](#1-list)
+    + [2. todo](#2-todo)
+    + [3. deadline](#3-deadline)
+    + [4. event](#4-event)
+    + [5. find](#5-find)
+    + [6. done](#6-done)
+    + [7. delete](#7-delete)
+    + [8. help](#8-help)
+    + [9. bye](#9-bye)
+* [FAQ](#faq)
+* [Command Summary](#command-summary)
+
 ## Quick Start
 
 1. Ensure that you have java `11` installed in your computer.
