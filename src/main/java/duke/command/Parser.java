@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents the message input by the user. It makes sense of the message by parsing it.
+ */
 public class Parser {
 
     private String message;
@@ -17,8 +20,13 @@ public class Parser {
         this.message = message;
     }
 
+    /**
+     * Extracts the job to be done from the raw message command.
+     *
+     * @return The type of command that was given by the user.
+     * @throws DukeException If command input is unidentified.
+     */
     public CommandType extractType() throws DukeException {
-        //message = message.trim();
         String command = message.trim();
         if(command.contains(" ")) {
             command = command.split(" ")[0];
@@ -47,12 +55,13 @@ public class Parser {
         }
     }
 
-    /** checks the event or deadline command to ensure the input is right and complete.
+    /**
+     * Checks the event or deadline command to ensure the input is right and complete.
      *
      * @param rawName array of description and deadline/date.
-     * @param taskName type of task.
+     * @param taskName type of task,i.e, event or deadline.
      * @param taskIdentifier on or by task.
-     * @throws DukeException duke error.
+     * @throws DukeException If task description, on/by or date description is missing.
      */
     public void checkCommand(String[] rawName, String taskName, String taskIdentifier) throws DukeException {
         if (rawName[0].trim().equalsIgnoreCase(taskName)) {
@@ -66,10 +75,11 @@ public class Parser {
         }
     }
 
-    /** Get the item number from the command entered.
+    /**
+     * Get the item number of the item to be marked done or deleted from the command entered.
      *
      * @param commandLen the length of command given.
-     * @return the item number.
+     * @return The item number.
      */
     public int extractItemNo(int commandLen) {
 

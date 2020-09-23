@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Represents the file where data is stored and from which data is retrieved.
+ */
 public class FileManager {
 
     private String filename;
@@ -26,6 +29,10 @@ public class FileManager {
         createFile();
     }
 
+    /**
+     * Creates a new file if the file does not exist.
+     * Opens a file if it exists.
+     */
     private void createFile() {
         file = new File(dir + '/' + filename);
         try {
@@ -40,6 +47,12 @@ public class FileManager {
         }
     }
 
+    /**
+     * Loads the data stored in the file and store it in an ArrayList.
+     *
+     * @return the ArrayList of data generated from the file.
+     * @throws FileNotFoundException If the file is not found.
+     */
     public ArrayList<Task> loadData() throws FileNotFoundException {
         ArrayList<Task> tasks = new ArrayList<>();
         Scanner s = new Scanner(file); // create a Scanner using the File as the source
@@ -65,6 +78,12 @@ public class FileManager {
         return tasks;
     }
 
+    /**
+     * Updates the text file according to the new task list.
+     *
+     * @param tasks the new list of tasks.
+     * @throws IOException If there is a problem writing into the file.
+     */
     public void updateList(TaskList tasks) throws IOException {
         FileWriter fw = new FileWriter(file);
         String description;

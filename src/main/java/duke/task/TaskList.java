@@ -7,7 +7,11 @@ import duke.exception.ExceptionType;
 
 import java.util.ArrayList;
 
-public class TaskList extends ArrayList<Task>{
+/**
+ * Represents the list of tasks entered by the user.
+ * Performs actions on the list based on the user command input.
+ */
+public class TaskList extends ArrayList<Task> {
 
     public static final int DEADLINE_LEN = 9;
     public static final int EVENT_LEN = 6;
@@ -23,12 +27,13 @@ public class TaskList extends ArrayList<Task>{
         super.addAll(tasks);
     }
 
-    /** Adds the new task to the list.
+    /**
+     * Adds the new task to the list.
      *
      * @param parser the command parser for the given input.
      * @param command task name given by the user.
      * @param type the type of task.
-     * @throws DukeException duke error.
+     * @throws DukeException If command is missing description, date or is unidentified.
      */
     public void add(Parser parser, String command, CommandType type) throws DukeException {
 
@@ -62,10 +67,11 @@ public class TaskList extends ArrayList<Task>{
         }
     }
 
-    /** Deletes the given item from the list.
+    /**
+     * Deletes the given item from the list.
      *
      * @param itemNo index of the item to be deleted.
-     * @throws DukeException duke error.
+     * @throws DukeException if number is invalid or not in the list.
      */
     public Task delete(int itemNo) throws DukeException {
         if(itemNo == 0) {
@@ -83,10 +89,11 @@ public class TaskList extends ArrayList<Task>{
         }
     }
 
-    /** Mark the given item as done.
+    /**
+     * Mark the given item as done.
      *
      * @param itemNo index of the item to be marked as done.
-     * @throws DukeException duke error.
+     * @throws DukeException if the number is invalid, not in the list or mark done already.
      */
     public Task done(int itemNo) throws DukeException {
 
