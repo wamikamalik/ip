@@ -2,6 +2,12 @@ package duke.command;
 
 import duke.exception.DukeException;
 import duke.exception.ExceptionType;
+import duke.task.Task;
+
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Parser {
 
@@ -90,5 +96,46 @@ public class Parser {
             throw new DukeException(ExceptionType.MISSING_KEYWORD);
         }
         return keyword;
+    }
+
+    public static String toDate(String date) throws DukeException {
+        String finalDate;
+        try {
+            if(date.trim().contains(" ")) {
+                LocalDateTime d;
+                LocalDateTime today = LocalDateTime.now();
+                String[] parts = date.trim().split(" ");
+                String[] dates = parts[0].split("-");
+                String[] time = parts[1].split(":");
+                d = LocalDateTime.of(Integer.parseInt(dates[2]), Integer.parseInt(dates[1]),
+                        Integer.parseInt(dates[0]), Integer.parseInt(time[0]), Integer.parseInt(time[1]));
+                if(d.isBefore(today)) {
+                    throw new DukeException(ExceptionType.INVALID_DATE);
+                }
+                finalDate = d.format(DateTimeFormatter.ofPattern("MMM dd yyyy HH:mm"));
+            }
+            else {
+                LocalDate d;
+                LocalDate today = LocalDate.now();
+                String[] dates = date.trim().split("-");
+                d = LocalDate.of(Integer.parseInt(dates[2]), Integer.parseInt(dates[1]),
+                        Integer.parseInt(dates[0]));
+                if(d.isBefore(today)) {
+                    throw new DukeException(ExceptionType.INVALID_DATE);
+                }
+                finalDate = d.format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+            }
+        } catch (DateTimeException | ArrayIndexOutOfBoundsException | NumberFormatException e) {
+            throw new DukeException(ExceptionType.WRONG_DATE_FORMAT);
+        }
+        return (finalDate);
+    }
+
+    public static boolean isToday(Task task) {
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("MMM dd yyyy"));
+        if(task.toString().contains(today)) {
+            return true;
+        }
+        return false;
     }
 }

@@ -33,7 +33,6 @@ public class Ui {
 
         System.out.println("\tHey there! I'm Ace, your very own personal assistant.");
         System.out.println("\tHow can I help you today?\n");
-        printLine();
 
     }
 
@@ -99,6 +98,18 @@ public class Ui {
             System.out.println("\n\tThese are the matching tasks in your list:");
             for (int i = 0; i<tasksFound.size(); i += 1) {
                 System.out.println("\t\t"+ (i+1) + ". " + tasksFound.get(i));
+            }
+            System.out.println();
+        }
+    }
+
+    public void listTasksForToday(TaskList dueToday) {
+        if(dueToday.size()==0) {
+            System.out.println("\n\tYou don't have any tasks or events due today ;)\n");
+        } else {
+            System.out.println("\n\tThese are your deadlines and events for today:");
+            for (int i = 0; i<dueToday.size(); i += 1) {
+                System.out.println("\t\t"+ (i+1) + ". " + dueToday.get(i));
             }
             System.out.println();
         }

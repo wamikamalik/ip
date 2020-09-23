@@ -9,7 +9,9 @@ public enum ExceptionType {
     NOT_IN_LIST("\n\tSuch an item does not exist.\n"),
     ALREADY_DONE("\n\tThis task was marked as done earlier!\n\tTo see the list of incomplete tasks simply type" +
             " \"list\".\n"),
-    MISSING_KEYWORD("\n\tYikies! The keyword is missing.\n");
+    MISSING_KEYWORD("\n\tYikies! The keyword is missing.\n"),
+    WRONG_DATE_FORMAT("\n\tThe date should be in the format: dd-mm-yyyy HH:mm OR dd-mm-yyyy\n"),
+    INVALID_DATE("\n\tThis date has passed already!\n");
 
     private String message;
 
