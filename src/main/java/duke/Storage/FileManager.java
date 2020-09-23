@@ -1,5 +1,6 @@
 package duke.Storage;
 
+import duke.exception.DukeException;
 import duke.task.TaskList;
 import duke.task.Deadline;
 import duke.task.Event;
@@ -67,12 +68,12 @@ public class FileManager {
                 tasks.add(new Deadline(details[2].trim(), details[3].trim()));
                 break;
             case "E":
-                 tasks.add(new Event(details[2].trim(), details[3].trim()));
+                tasks.add(new Event(details[2].trim(), details[3].trim()));
             }
-            if(details[1].trim().equals("1")) {
+            if (details[1].trim().equals("1")) {
                 tasks.get(taskNo).markAsDone();
             }
-            taskNo+=1;
+            taskNo += 1;
         }
         return tasks;
     }

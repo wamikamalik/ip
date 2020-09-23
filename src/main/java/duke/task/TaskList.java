@@ -51,14 +51,16 @@ public class TaskList extends ArrayList<Task> {
             parser.checkCommand(rawName, "deadline", DEADLINE_IDENTIFIER);
             String deadlineName = rawName[0].substring(DEADLINE_LEN).trim();
             String by = rawName[1].trim();
-            super.add(new Deadline(deadlineName, by));
+            String byDate = Parser.toDate(by);
+            super.add(new Deadline(deadlineName, byDate));
             break;
         case EVENT:
             String[] rawEventName = command.trim().split(EVENT_IDENTIFIER);
             parser.checkCommand(rawEventName, "event", EVENT_IDENTIFIER);
             String eventName = rawEventName[0].substring(EVENT_LEN).trim();
             String on = rawEventName[1].trim();
-            super.add(new Event(eventName, on));
+            String onDate = Parser.toDate(on);
+            super.add(new Event(eventName, onDate));
             break;
             default:
                 throw new DukeException(ExceptionType.UNIDENTIFIED);
@@ -108,4 +110,13 @@ public class TaskList extends ArrayList<Task> {
         }
     }
 
+    public ArrayList<Task> getToday() {
+        ArrayList<Task> dueToday = new ArrayList<>();
+        super.forEach(task -> {
+            if(Parser.isToday(task)) {
+                dueToday.add(task);
+            }
+        });
+        return dueToday;
+    }
 }
