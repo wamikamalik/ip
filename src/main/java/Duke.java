@@ -9,6 +9,9 @@ import duke.exception.DukeException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+/**
+ * Represents the main class of Duke.
+ */
 public class Duke {
 
     public static final int DONE_TODO_LEN = 5;
@@ -36,6 +39,9 @@ public class Duke {
         new Duke().run();
     }
 
+    /**
+     * Execute the flow of the personal assistant.
+     */
     public void run() {
         ui.printWelcomeMessage();
         boolean isExit = false;
@@ -49,7 +55,6 @@ public class Duke {
                 CommandType type = parser.extractType();
                 switch (type) {
                 case EXIT:
-                    file.updateList(tasks);
                     isExit = true;
                     ui.printByeMessage();
                     break;
@@ -79,10 +84,15 @@ public class Duke {
                     ui.addMessage(tasks);
                     break;
                 }
-            } catch (DukeException | IOException error) {
+            } catch (DukeException error) {
                 ui.showError(error);
             }
             ui.printLine();
+        }
+        try {
+            file.updateList(tasks);
+        } catch (IOException error) {
+            ui.showError(error);
         }
     }
 

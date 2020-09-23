@@ -3,6 +3,9 @@ import duke.task.Task;
 
 import java.util.Scanner;
 
+/**
+ * Represents all the interaction that happens with the user.
+ */
 public class Ui {
 
     private Scanner in = new Scanner(System.in);
@@ -50,8 +53,9 @@ public class Ui {
         System.out.println("\n\tSee you! Have a nice day!\n");
     }
 
-    /** Displays the appropriate message after adding task
-     *
+    /**
+     * Displays the appropriate message after adding task.
+     * @param tasks the list of tasks to which a new task has been added.
      */
     public void addMessage(TaskList tasks) {
 
@@ -62,6 +66,11 @@ public class Ui {
 
     }
 
+    /**
+     * Displays the appropriate message after deleting a task.
+     *
+     * @param taskToDelete the task that has been deleted.
+     */
     public void deleteMessage(Task taskToDelete) {
 
         System.out.println("\n\tOkie! I have removed the following task:");
@@ -71,12 +80,21 @@ public class Ui {
 
     }
 
+    /**
+     * Displays the appropriate message after marking a task as done.
+     *
+     * @param setDone the task that has been marked done.
+     */
     public void doneMessage(Task setDone) {
         System.out.println("\n\tGreat! I have updated your To-Do list for the following task:");
         System.out.println("\t\t " + setDone + "\n");
     }
 
-
+    /**
+     * Displays the list of tasks.
+     *
+     * @param tasks tasks to be listed.
+     */
     public void listTasks(TaskList tasks) {
 
         if(Task.getNoOfTasks()==0) {
