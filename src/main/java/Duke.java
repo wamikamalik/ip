@@ -40,6 +40,11 @@ public class Duke {
         ui.printWelcomeMessage();
         boolean isExit = false;
         int itemNo;
+        
+        ArrayList<Task> tasksToday = tasks.getToday();
+        TaskList dueToday = new TaskList(tasksToday);
+        ui.listTasksForToday(dueToday);
+        ui.printLine();
 
         while(!isExit) {
             //the following code interprets the command entered by the user and takes appropriate actions.
