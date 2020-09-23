@@ -41,6 +41,8 @@ public class Parser {
             return CommandType.DELETE;
         } else if(command.equalsIgnoreCase("find")) {
             return CommandType.FIND;
+        } else if(command.equalsIgnoreCase("help")) {
+            return CommandType.HELP;
         } else if(message.length()<4) {
             throw new DukeException(ExceptionType.UNIDENTIFIED);
         }

@@ -81,6 +81,9 @@ public class Duke {
                     TaskList tasksFound = new TaskList(tasks.find(keyword));
                     ui.listMatchingTasks(tasksFound);
                     break;
+                case HELP:
+                    ui.printHelp();
+                    break;
                 case TODO:
                     tasks.add(parser, fullCommand, CommandType.TODO);
                     ui.addMessage(tasks);

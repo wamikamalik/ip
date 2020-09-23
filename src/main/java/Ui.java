@@ -132,4 +132,28 @@ public class Ui {
             System.out.println();
         }
     }
+
+    /**
+     * Displays the help data to the user.
+     */
+    public void printHelp() {
+        System.out.println("\n\tThese are the list of commands you can use:\n");
+        System.out.println("\t\t1. help\n\t\tProvides a list of commands you can enter.\n");
+        System.out.println("\t\t2. list\n\t\tProvides a list of your tasks.\n");
+        System.out.println("\t\t3. todo <taskname>\n\t\tAdds a todo to the list with name <taskname>." +
+                "\n\t\texample: todo read book\n");
+        System.out.println("\t\t4. deadline <taskname> /by <date>\n\t\tAdds a deadline to the list with name <taskname>"
+                + " and deadline <date>." + "\n\t\texample: deadline return book /by 30-10-2020\n\t\t\t\t OR\n\t\t\t\t "
+                + "deadline return book " + "/by 30-10-2020 14:35\n");
+        System.out.println("\t\t5. event <taskname> /on <date>\n\t\tAdds an event to the list with name <taskname> and"
+                + " event date <date>." + "\n\t\texample: event book show /on 30-10-2020\n\t\t\t\t OR\n\t\t\t\t "
+                + "event book show " + "/on 30-10-2020 14:35\n");
+        System.out.println("\t\t6. done <tasknumber>\n\t\tMarks the task with number <tasknumber> as done." +
+                "\n\t\texample: done 3\n");
+        System.out.println("\t\t7. delete <tasknumber>\n\t\tDeletes the task with number <tasknumber>." +
+                "\n\t\texample: delete 3\n");
+        System.out.println("\t\t8. find <keyword>\n\t\tLists the tasks that contain the <keyword>." +
+                "\n\t\texample: find book\n");
+        System.out.println("\t\t9. bye\n\t\tExits the application.\n");
+    }
 }
