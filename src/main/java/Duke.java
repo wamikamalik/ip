@@ -8,6 +8,7 @@ import duke.exception.DukeException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Duke {
 
@@ -19,7 +20,6 @@ public class Duke {
     private TaskList tasks;
     private Ui ui;
     private FileManager file;
-    private Parser parser;
 
     public Duke() {
         ui = new Ui();
@@ -40,12 +40,16 @@ public class Duke {
         ui.printWelcomeMessage();
         boolean isExit = false;
         int itemNo;
+        ArrayList<Task> tasksToday = tasks.getToday();
+        TaskList dueToday = new TaskList(tasksToday);
+        ui.listTasksForToday(dueToday);
+        ui.printLine();
 
         while(!isExit) {
             //the following code interprets the command entered by the user and takes appropriate actions.
             try {
                 String fullCommand = ui.getCommand();
-                parser = new Parser(fullCommand);
+                Parser parser = new Parser(fullCommand);
                 CommandType type = parser.extractType();
                 switch (type) {
                 case EXIT:
