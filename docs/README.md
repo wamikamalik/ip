@@ -13,11 +13,13 @@ Ace is a desktop app personal assistant for managing tasks list, optimised for u
 
 ## Features 
 
-Notes about command format: | 
------------- | 
-1. Words in _italics_ are parameters to be provided by the user. |
-2. Words in {} are optional parameters. |
-3. Casing doesn't matter for the commands. For example: `list` is the same as `List` or `LiSt`. |
+```
+Notes about command format:  
+
+1. Words in _italics_ are parameters to be provided by the user.
+2. Words in {} are optional parameters. 
+3. Casing doesn't matter for the commands. For example: `list` is the same as `List` or `LiSt`. 
+```
 
 Following is the list of features available:
 * `list`: Provides a list of your tasks.
@@ -152,7 +154,9 @@ Format: `bye`
 **Q:** What to do if I see the ticks and crosses for my tasks as `?`?
 
 Run the following command on your command prompt:
+
 ![command to enter](commandPrompt.jpg)
+
 If you still don't see the ticks/crosses, change the font of your command prompt to NSimSun.
 
 ## Command Summary
