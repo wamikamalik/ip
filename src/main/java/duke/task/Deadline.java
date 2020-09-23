@@ -1,5 +1,8 @@
 package duke.task;
 
+/**
+ * Represents a task that is a deadline.
+ */
 public class Deadline extends Task{
     protected String by;
 

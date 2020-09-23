@@ -1,5 +1,8 @@
 package duke.task;
 
+/**
+ * Superclass of all types of tasks like deadlines, events and todos.
+ */
 public abstract class Task {
 
     /**Description of task*/
