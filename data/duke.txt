@@ -1,5 +1,2 @@
-T | 1 | read book
-E | 0 | project meeting | Sep 22 2020
-T | 1 | join sports club
-T | 0 | read book
-D | 0 | abc | Sep 22 2020 14:00
+D | 0 | return book | Oct 20 2020
+E | 0 | book conference | Oct 20 2020 14:45
