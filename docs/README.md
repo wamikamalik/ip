@@ -13,6 +13,8 @@ Ace is a desktop app personal assistant for managing tasks list, optimised for u
     + [7. delete](#7-delete)
     + [8. help](#8-help)
     + [9. bye](#9-bye)
+    + [10. Saving the Data](#10-saving-the-data)
+* [Note About Date Format](#note-about-date-format)
 * [FAQ](#faq)
 * [Command Summary](#command-summary)
 
@@ -33,6 +35,7 @@ Notes about command format:
 1. Words in _italics_ are parameters to be provided by the user.
 2. Words in {} are optional parameters. 
 3. Casing doesn't matter for the commands. For example: `list` is the same as `List` or `LiSt`. 
+4. Dates for deadline and event can only be entered in the format: dd-mm-yyyy {HH:mm}.
 ```
 
 Following is the list of features available:
@@ -162,6 +165,20 @@ Saves your updated tasks list in a text file data/duke.txt and exits the program
 ##### Usage
 
 Format: `bye`
+
+### 10. Saving the Data
+The updated task list is automatically saved in the text file data/duke.txt at every successful exit from Ace. This data is loaded as soon as the application starts.
+Ace displays all tasks due on the day you open the application by filtering out tasks from this loaded data.
+
+## Note About Date Format
+* Format for date to be entered for a deadline or event is **dd-mm-yyyy {HH:mm}**.
+* Format in which dates are stored and printed is **MMM dd yyyy {HH:mm}**.
+* The description of these formats are as follows:
+    + dd - date as a 2 digit number. Values range between 01 and 31, both included.
+    + mm - month as a 2 digit number. Values range between 01 and 12, both included.
+    + yyyy -  year as a 4 digit number.
+    + MMM - first three letters of the month.
+    + HH:mm - time in 24-hr format.
 
 ## FAQ
 
